@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
-using sda_onsite_2_csharp_backend_teamwork.src.Database;
 using sda_onsite_2_csharp_backend_teamwork.src.DTO;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
-using sda_onsite_2_csharp_backend_teamwork.src.Repository;
 using sda_onsite_2_csharp_backend_teamwork.src.Utility;
 
 namespace sda_onsite_2_csharp_backend_teamwork.src.Service;
@@ -57,7 +51,7 @@ public class UserService : IUserService
         return _userRepository.DeleteOne(id);
     }
 
-    public UserReadDto? CreateOne(User user)
+    public UserReadDto? SignUp(User user)
     {
         User? foundUser =
          _userRepository.FindOne(user.Id);

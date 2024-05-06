@@ -1,7 +1,9 @@
 
 using System.Net;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
+using sda_onsite_2_csharp_backend_teamwork.src.Enums;
 
 namespace sda_onsite_2_csharp_backend_teamwork.src.Database;
 public class DatabaseContext : DbContext
@@ -17,12 +19,18 @@ public class DatabaseContext : DbContext
     {
         _config = config;
     }
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseNpgsql(@$"Host={_config["Db:Host"]};Username={_config["Db:Username"]};Database={_config["Db:Database"]};Password={_config["Db:Password"]}")
-    //    .UseSnakeCaseNamingConvention();
-    // }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(@$"Host=localhost;Username=postgres;Database=ecommerce;Password=.")
-        .UseSnakeCaseNamingConvention();
+    {
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(@$"Host={_config["Db:Host"]};Username={_config["Db:Username"]};Database={_config["Db:Database"]};Password={_config["Db:Password"]};Port={_config["Db:Port"]}");
+        dataSourceBuilder.MapEnum<Role>();
+        var dataSource = dataSourceBuilder.Build();
+
+        optionsBuilder.UseNpgsql(dataSource)
+       .UseSnakeCaseNamingConvention();
+
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasPostgresEnum<Role>();
+    }
 }

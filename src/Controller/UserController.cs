@@ -36,7 +36,7 @@ public class UserController : BaseController
     {
         if (user is not null)
         {
-            var createdUser = _userService.CreateOne(user);
+            var createdUser = _userService.SignUp(user);
             return CreatedAtAction(nameof(CreateOne), createdUser);
         }
         return BadRequest();

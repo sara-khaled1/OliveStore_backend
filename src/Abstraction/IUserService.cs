@@ -7,7 +7,7 @@ public interface IUserService
 {
     public IEnumerable<UserReadDto> FindAll();
     public UserReadDto? FindOne(Guid id);
-    public UserReadDto? CreateOne(User user);
+    public UserReadDto? SignUp(User user);
     public UserReadDto? UpdateOne(Guid id, User user);
     public bool DeleteOne(Guid id);
 }
