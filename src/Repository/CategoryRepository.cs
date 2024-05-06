@@ -31,7 +31,7 @@ public class CategoryRepository : ICategoryRepository
 
     public Category CreateOne(Category newCategory)
     {
-        _categories.Append(newCategory);
+        _categories.Add(newCategory);
         _databaseContext.SaveChanges();
         return newCategory;
     }

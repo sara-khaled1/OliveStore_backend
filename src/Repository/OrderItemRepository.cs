@@ -32,7 +32,7 @@ public class OrderItemRepository : IOrderItemRepository
 
     public OrderItem CreateOne(OrderItem orderItem)
     {
-        _orderItems.Append(orderItem);
+        _orderItems.Add(orderItem);
         _databaseContext.SaveChanges();
         return orderItem;
     }
