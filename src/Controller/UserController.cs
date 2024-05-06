@@ -30,14 +30,26 @@ public class UserController : BaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public ActionResult<IEnumerable<UserReadDto>> CreateOne([FromBody] User user)
+    public ActionResult<IEnumerable<UserReadDto>> SignUp([FromBody] UserCreateDto user)
     {
         if (user is not null)
         {
             var createdUser = _userService.SignUp(user);
-            return CreatedAtAction(nameof(CreateOne), createdUser);
+            return CreatedAtAction(nameof(SignUp), createdUser);
+        }
+        return BadRequest();
+    }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult<IEnumerable<UserReadDto>> SignIn([FromBody] UserSignIn userSign)
+    {
+        if (userSign is not null)
+        {
+            var createdUser = _userService.SignIn(userSign);
+            return CreatedAtAction(nameof(SignIn), createdUser);
         }
         return BadRequest();
     }

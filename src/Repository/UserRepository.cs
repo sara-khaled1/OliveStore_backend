@@ -22,13 +22,18 @@ public class UserRepository : IUserRepository
 
     public User CreateOne(User user)
     {
-        _users.Append(user);
+        _users.Add(user);
         _databaseContext.SaveChanges();
         return user;
     }
     public User? FindOne(Guid id)
     {
         User? user = _users.FirstOrDefault(user => user.Id == id);
+        return user;
+    }
+    public User? FindByEmail(string email)
+    {
+        User? user = _users.FirstOrDefault(user => user.Email == email);
         return user;
     }
 
@@ -46,4 +51,5 @@ public class UserRepository : IUserRepository
         _databaseContext.SaveChanges();
         return true;
     }
+
 }

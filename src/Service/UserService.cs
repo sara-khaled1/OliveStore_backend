@@ -18,6 +18,20 @@ public class UserService : IUserService
         _config = config;
         _mapper = mapper;
     }
+    public UserReadDto? SignIn(UserSignIn userSign)
+    {
+        User? user = _userRepository.FindByEmail(userSign.Email);
+        if (user is null) return null;
+
+        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+
+        bool isCorrectPass = PasswordUtility.VerifyPassword(userSign.Password, user.Password, pepper);
+        if (!isCorrectPass) return null;
+
+        UserReadDto userRead = _mapper.Map<UserReadDto>(user);
+        return userRead;
+
+    }
     public IEnumerable<UserReadDto> FindAll()
     {
         var user = _userRepository.FindAll();
@@ -28,6 +42,12 @@ public class UserService : IUserService
     public UserReadDto? FindOne(Guid id)
     {
         User? user = _userRepository.FindOne(id);
+        UserReadDto? userRead = _mapper.Map<UserReadDto>(user);
+        return userRead;
+    }
+    public UserReadDto? FindByEmail(string email)
+    {
+        User? user = _userRepository.FindByEmail(email);
         UserReadDto? userRead = _mapper.Map<UserReadDto>(user);
         return userRead;
     }
@@ -51,22 +71,20 @@ public class UserService : IUserService
         return _userRepository.DeleteOne(id);
     }
 
-    public UserReadDto? SignUp(User user)
+    public UserReadDto? SignUp(UserCreateDto user)
     {
-        User? foundUser =
-         _userRepository.FindOne(user.Id);
+        User? foundUser = _userRepository.FindByEmail(user.Email);
         if (foundUser is not null)
         {
             return null;
         }
-        byte[] pepper =
-        Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
 
         PasswordUtility.HashPassword(user.Password, out string hashedPassword, pepper);
         user.Password = hashedPassword;
 
-
-        var createdUser = _userRepository.CreateOne(user);
+        var createUser = _mapper.Map<User>(user);
+        var createdUser = _userRepository.CreateOne(createUser);
         var userRead = _mapper.Map<UserReadDto>(createdUser);
         return userRead;
     }

@@ -7,11 +7,10 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
 {
     public class OrderService : IOrderService
     {
-        private IOrderRepository _orderRepository;
-        private IOrderItemRepository _orderItemRepository;
-
-        private IProductRepository _productRepository;
-        private IMapper _mapper;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
         public OrderService(IOrderItemRepository orderItemRepository, IProductRepository productRepository, IOrderRepository orderReposiroty, IMapper mapper)
         {
             _mapper = mapper;
@@ -38,16 +37,14 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
             var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             return orderRead;
         }
-        public OrderReadDto Checkout(List<CheckoutDto> checkoutList)//? what we return OR void?
+        public OrderReadDto Checkout(List<CheckoutDto> checkoutList)
         {
+            double TotalPrice = 0;
             var order = new Order();
             order.UserId = Guid.NewGuid();
             order.AddressId = Guid.NewGuid();
             order.Status = "pending";
             order.OrderDate = DateTime.Now;
-            order.TotalPrice = 100;
-            var createdOrder = _orderRepository.CreateOne(order);//?? how will fill other fields?
-
             foreach (var orderCheckout in checkoutList)
             {
                 var product = _productRepository.FindOne(orderCheckout.ProductId);
@@ -56,33 +53,23 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
                 if (product.Quantity >= orderCheckout.Quantity)
                 {
                     product.Quantity -= orderCheckout.Quantity;
-                    _productRepository.UpdateQuantity(product); //! does this update the product? yes.
+                    _productRepository.UpdateQuantity(product); 
                     var orderItem = new OrderItem();
                     orderItem.ProductId = product.Id;
                     orderItem.OrderId = order.Id;
                     orderItem.Quantity = orderCheckout.Quantity;
                     orderItem.UnitPrice = (product.Price * orderCheckout.Quantity);
                     _orderItemRepository.CreateOne(orderItem);
+                    TotalPrice += orderItem.UnitPrice;
                 }
-
             }
+
+            order.TotalPrice = TotalPrice;
+            var createdOrder = _orderRepository.CreateOne(order);
             var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             return orderRead;
-
-            /*
-            [
-  {
-    "quantity": 4,
-    "productId": "b033b1bd-86a3-4cd7-9972-1fcd1cabfe29"
-  },
-{
-    "quantity": 3,
-    "productId": "0b698e9d-5d2d-4112-8717-cf8143dd6d7d"
-  }
-]
-
-            */
         }
+
         public OrderReadDto? UpdateOne(Guid id, Order newOrder)
         {
             Order? updatedOrder = _orderRepository.FindOne(id);

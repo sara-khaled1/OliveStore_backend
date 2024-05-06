@@ -8,10 +8,10 @@ public class AddressRepository : IAddressRepository
 {
     private DbSet<Address> _addresses { get; set; }
     private DatabaseContext _databaseContext;
-    public AddressRepository(DatabaseContext databaseContext)//public AddressRepository(DatabaseContext databaseContext)
+    public AddressRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
-        _addresses = databaseContext.Addresses;// Addresses = databaseContext.Addresses
+        _addresses = databaseContext.Addresses;
     }
 
     public IEnumerable<Address> FindAll()
@@ -28,7 +28,7 @@ public class AddressRepository : IAddressRepository
     }
     public Address CreateOne(Address address)
     {
-        _addresses.Append(address);
+        _addresses.Add(address);
         _databaseContext.SaveChanges();
         return address;
     }
@@ -44,6 +44,5 @@ public class AddressRepository : IAddressRepository
         if (address is null) return false;
         _addresses.Remove(address);
         return true;
-
     }
 }
