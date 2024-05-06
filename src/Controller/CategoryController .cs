@@ -24,7 +24,7 @@ public class CategoryController : BaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public ActionResult<CategoryReadDto> CreateOne([FromBody] Category category)
+    public ActionResult<CategoryCreateDto> CreateOne([FromBody] Category category)
     {
         if (category is not null)
         {
