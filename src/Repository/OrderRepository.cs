@@ -27,7 +27,7 @@ public class OrderRepository : IOrderRepository
     }
     public Order CreateOne(Order order)
     {
-        _orders.Append(order);
+        _orders.Add(order);
         _databaseContext.SaveChanges();
         return order;
     }

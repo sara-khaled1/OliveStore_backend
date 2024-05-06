@@ -16,6 +16,8 @@ public class MappingProfile : Profile
         CreateMap<OrderReadDto, Order>();
         CreateMap<Order, OrderReadDto>();
 
+        CreateMap<CheckoutDto, OrderItem>();
+
         CreateMap<UserReadDto, User>();
         CreateMap<User, UserReadDto>();
 

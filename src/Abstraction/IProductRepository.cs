@@ -13,6 +13,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Abstraction
         public Product? FindByCategory(Guid categoryId);
         public Product CreateOne(Product product);
         public Product UpdateOne(Product product);
+        public void UpdateQuantity(Product updatedProduct);
         public bool DeleteOne(Guid id);
 
     }

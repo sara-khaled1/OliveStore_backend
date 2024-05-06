@@ -12,6 +12,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Abstraction
         public IEnumerable<OrderReadDto> FindAll();
         public OrderReadDto? FindOne(Guid orderId);
         public OrderReadDto CreateOne(OrderCreateDto order);
+        public OrderReadDto Checkout(List<CheckoutDto> checkoutList);
         public OrderReadDto? UpdateOne(Guid id, Order order);
         public bool DeleteOne(Guid id);
     }

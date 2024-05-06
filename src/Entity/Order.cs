@@ -13,6 +13,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Entity
         public string Status { get; set; }
         public DateTime OrderDate { get; set; }
         public double TotalPrice { set; get; }
-      
+        public IEnumerable<OrderItem> OrderItems { get; set; }
+
     }
 }

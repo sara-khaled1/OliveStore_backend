@@ -41,7 +41,7 @@ public class ProductRepository : IProductRepository
 
     public Product CreateOne(Product product)
     {
-        _products.Append(product);
+        _products.Add(product);
         _databaseContext.SaveChanges();
         return product;
     }
@@ -52,7 +52,11 @@ public class ProductRepository : IProductRepository
         _databaseContext.SaveChanges();
         return updatedProduct;
     }
-
+    public void UpdateQuantity(Product updatedProduct)
+    {
+        _products.Update(updatedProduct);
+        _databaseContext.SaveChanges();
+    }
     public bool DeleteOne(Guid id)
     {
         Product? foundProduct = FindOne(id);
