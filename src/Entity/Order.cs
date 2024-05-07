@@ -1,19 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using sda_onsite_2_csharp_backend_teamwork.src.Enums;
 
-namespace sda_onsite_2_csharp_backend_teamwork.src.Entity
+namespace sda_onsite_2_csharp_backend_teamwork.src.Entity;
+public class Order
 {
-    public class Order
-    {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public Guid AddressId { get; set; }
-        public string Status { get; set; }
-        public DateTime OrderDate { get; set; }
-        public double TotalPrice { set; get; }
-        public IEnumerable<OrderItem> OrderItems { get; set; }
+    [Required]
+    public Guid Id { get; set; }
+    [Required]
+    public Guid UserId { get; set; }
+    [Required]
+    public Guid AddressId { get; set; }
+    public Status Status { get; set; } = Status.Pending;
+    public DateTime OrderDate { get; set; }
+    [Required]
+    public double TotalPrice { set; get; }
+    public IEnumerable<OrderItem> OrderItems { get; set; }
 
-    }
 }

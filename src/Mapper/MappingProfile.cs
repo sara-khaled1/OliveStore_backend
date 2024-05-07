@@ -20,6 +20,8 @@ public class MappingProfile : Profile
 
         CreateMap<UserReadDto, User>();
         CreateMap<User, UserReadDto>();
+        CreateMap<UserCreateDto, User>();
+
 
         CreateMap<OrderItemReadDto, OrderItem>();
         CreateMap<OrderItem, OrderItemReadDto>();

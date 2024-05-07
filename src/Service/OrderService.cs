@@ -43,7 +43,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
             var order = new Order();
             order.UserId = Guid.NewGuid();
             order.AddressId = Guid.NewGuid();
-            order.Status = "pending";
+            // order.Status = Enums.Status.Approved;
             order.OrderDate = DateTime.Now;
             foreach (var orderCheckout in checkoutList)
             {
@@ -53,7 +53,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
                 if (product.Quantity >= orderCheckout.Quantity)
                 {
                     product.Quantity -= orderCheckout.Quantity;
-                    _productRepository.UpdateQuantity(product); 
+                    _productRepository.UpdateQuantity(product);
                     var orderItem = new OrderItem();
                     orderItem.ProductId = product.Id;
                     orderItem.OrderId = order.Id;

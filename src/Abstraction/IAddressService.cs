@@ -7,7 +7,7 @@ public interface IAddressService
 {
     public IEnumerable<AddressReadDto> FindAll();
     public AddressReadDto? FindOne(Guid id);
-    public AddressReadDto CreateOne(Address address);
+    public AddressReadDto CreateOne(AddressCreateDto address);
     public AddressReadDto? UpdateOne(Guid id, Address address);
     public bool DeleteOne(Guid id);
 }

@@ -11,3 +11,11 @@ public class AddressReadDto
     public string City { get; set; }
     public string Street { get; set; }
 }
+public class AddressCreateDto
+{
+    public Guid UserId { get; set; }//???? do we need it????!!!!!??!!?!?!?
+    public string Country { get; set; }
+    public string City { get; set; }
+    public string Street { get; set; }
+    public string Zip_code { get; set; }
+}

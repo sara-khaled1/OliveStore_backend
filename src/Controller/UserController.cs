@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.Database;
@@ -15,6 +16,7 @@ public class UserController : BaseController
     }
 
     [HttpGet]
+    // [Authorize(Roles = "Admin")]
     public IEnumerable<UserReadDto> FindAll()
     {
         return _userService.FindAll();
@@ -29,8 +31,8 @@ public class UserController : BaseController
         return Ok(foundProduct);
     }
 
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpPost("signup")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<IEnumerable<UserReadDto>> SignUp([FromBody] UserCreateDto user)
     {
@@ -41,15 +43,16 @@ public class UserController : BaseController
         }
         return BadRequest();
     }
-    [HttpPost]
+    [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<IEnumerable<UserReadDto>> SignIn([FromBody] UserSignIn userSign)
     {
         if (userSign is not null)
         {
-            var createdUser = _userService.SignIn(userSign);
-            return CreatedAtAction(nameof(SignIn), createdUser);
+            var token = _userService.SignIn(userSign);
+            if (token is null) return BadRequest();
+            return Ok(token);
         }
         return BadRequest();
     }
