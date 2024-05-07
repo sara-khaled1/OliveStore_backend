@@ -19,7 +19,6 @@ public class UserRepository : IUserRepository
     {
         return _users;
     }
-
     public User CreateOne(User user)
     {
         _users.Add(user);
@@ -36,7 +35,6 @@ public class UserRepository : IUserRepository
         User? user = _users.FirstOrDefault(user => user.Email == email);
         return user;
     }
-
     public User UpdateOne(User updatedUser)
     {
         _users.Update(updatedUser);
@@ -51,5 +49,4 @@ public class UserRepository : IUserRepository
         _databaseContext.SaveChanges();
         return true;
     }
-
 }

@@ -32,5 +32,7 @@ public class MappingProfile : Profile
         CreateMap<AddressReadDto, Address>();
         CreateMap<Address, AddressReadDto>();
 
+        CreateMap<AddressCreateDto, Address>();
+
     }
 }

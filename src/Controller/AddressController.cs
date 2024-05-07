@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.DTO;
@@ -24,12 +26,17 @@ public class AddressController : BaseController
         return _addressService.FindAll();
     }
 
-    [HttpPost("create")]
+    [Authorize(Roles = "Admin,Customer")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public AddressReadDto? CreateOne([FromBody] Address address)
+    public AddressReadDto? CreateOne([FromBody] AddressCreateDto address)
     {
-        return _addressService.CreateOne(address);
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Console.WriteLine($"USER ID {userId}");
+        
+        return _addressService.CreateOne(address, userId);
     }
     [HttpPatch("{id}")]
     public ActionResult<AddressReadDto> UpdateOne(Guid id, Address address)

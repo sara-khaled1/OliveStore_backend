@@ -58,6 +58,9 @@ namespace Backend.Migrations
                     b.HasKey("Id")
                         .HasName("pk_addresses");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_addresses_user_id");
+
                     b.ToTable("addresses", (string)null);
                 });
 
@@ -99,9 +102,8 @@ namespace Backend.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("order_date");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
                         .HasColumnName("status");
 
                     b.Property<double>("TotalPrice")
@@ -114,6 +116,12 @@ namespace Backend.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_orders");
+
+                    b.HasIndex("AddressId")
+                        .HasDatabaseName("ix_orders_address_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_orders_user_id");
 
                     b.ToTable("orders", (string)null);
                 });
@@ -143,6 +151,12 @@ namespace Backend.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_order_items");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_order_items_order_id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_order_items_product_id");
 
                     b.ToTable("order_items", (string)null);
                 });
@@ -231,6 +245,50 @@ namespace Backend.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", b =>
+                {
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.User", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_addresses_users_user_id");
+                });
+
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Order", b =>
+                {
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_addresses_address_id");
+
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.User", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_users_user_id");
+                });
+
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.OrderItem", b =>
+                {
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_items_orders_order_id");
+
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Product", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_items_products_product_id");
+                });
+
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Product", b =>
                 {
                     b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Category", null)
@@ -241,9 +299,31 @@ namespace Backend.Migrations
                         .HasConstraintName("fk_products_category_category_id");
                 });
 
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Product", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.User", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

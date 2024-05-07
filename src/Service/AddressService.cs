@@ -25,9 +25,10 @@ public class AddressService : IAddressService
         AddressReadDto? addressRead = _mapper.Map<AddressReadDto>(address);
         return addressRead;
     }
-    public AddressReadDto CreateOne(AddressCreateDto address)
+    public AddressReadDto CreateOne(AddressCreateDto address, string userId)
     {
         var toAddress = _mapper.Map<Address>(address);
+        toAddress.UserId = new Guid(userId);
         var createAddress = _addressRepository.CreateOne(toAddress);
         var addressRead = _mapper.Map<AddressReadDto>(createAddress);
         return addressRead;
