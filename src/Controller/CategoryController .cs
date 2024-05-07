@@ -28,8 +28,8 @@ public class CategoryController : BaseController
     {
         if (category is not null)
         {
-            var createdUser = _CategoryService.CreateOne(category);
-            return CreatedAtAction(nameof(CreateOne), createdUser);
+            var createdCategory = _CategoryService.CreateOne(category);
+            return CreatedAtAction(nameof(CreateOne), createdCategory);
         }
         return BadRequest();
     }
