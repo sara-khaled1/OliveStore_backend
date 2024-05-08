@@ -14,13 +14,5 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Abstraction
         public Category UpdateOne(Category updatedCategory);
         public bool DeleteOne(Guid id);
 
-
-
-
-
-
-
-
-
     }
 }
