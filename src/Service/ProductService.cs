@@ -50,6 +50,8 @@ public class ProductService : IProductService
         {
             updatedProduct.Name = updatedReadProduct.Name;
             updatedProduct.Price = updatedReadProduct.Price;
+            updatedProduct.Quantity = updatedReadProduct.Quantity;
+            updatedProduct.CategoryId = updatedReadProduct.CategoryId;
             updatedProduct.Image = updatedReadProduct.Image;
             updatedProduct.Description = updatedReadProduct.Description;
 
