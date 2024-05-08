@@ -5,12 +5,12 @@ using sda_onsite_2_csharp_backend_teamwork.src.DTO;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
 namespace sda_onsite_2_csharp_backend_teamwork.src.Controllerl;
 
-public class IOrderItemController : BaseController
+public class OrderItemController : BaseController
 
 {
     private IOrderItemService _orderItemService;
 
-    public IOrderItemController(IOrderItemService orderItemService)
+    public OrderItemController(IOrderItemService orderItemService)
     {
 
 
