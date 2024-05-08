@@ -14,7 +14,7 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public IEnumerable<UserReadDto> FindAll()
     {
         return _userService.FindAll();
@@ -25,8 +25,12 @@ public class UserController : BaseController
     public ActionResult<UserReadDto?> FindOne(Guid id)
     {
 
-        UserReadDto? foundProduct = _userService.FindOne(id);
-        return Ok(foundProduct);
+        UserReadDto? foundUser = _userService.FindOne(id);
+        if (foundUser is null)
+        {
+            throw new NullReferenceException();
+        }
+        return Ok(foundUser);
     }
 
     [HttpPost("signup")]
@@ -68,7 +72,7 @@ public class UserController : BaseController
         }
         else return BadRequest();
     }
-    
+
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

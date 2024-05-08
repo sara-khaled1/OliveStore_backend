@@ -41,10 +41,11 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
         {
             double TotalPrice = 0;
             var order = new Order();
+            order.AddressId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66af16");
             order.UserId = new Guid(userId);
-            order.AddressId = Guid.NewGuid();
-            // order.Status = Enums.Status.Pending;
-            order.OrderDate = DateTime.Now;
+            order.Status = Enums.Status.Pending;
+            var createdOrder = _orderRepository.CreateOne(order);
+            var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             foreach (var orderCheckout in checkoutList)
             {
                 var product = _productRepository.FindOne(orderCheckout.ProductId);
@@ -63,10 +64,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
                     TotalPrice += orderItem.UnitPrice;
                 }
             }
-
             order.TotalPrice = TotalPrice;
-            var createdOrder = _orderRepository.CreateOne(order);
-            var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             return orderRead;
         }
 

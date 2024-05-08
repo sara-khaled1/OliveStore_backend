@@ -2,7 +2,7 @@ using sda_onsite_2_csharp_backend_teamwork.src.Exceptions;
 
 namespace sda_onsite_2_csharp_backend_teamwork.src.Middlewares
 {
-    public class CustomErrorMiddleware : IMiddleware 
+    public class CustomErrorMiddleware : IMiddleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
@@ -34,7 +34,6 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Middlewares
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync(e.Message);
                 Console.WriteLine($"Error: {e.Message}");
-                
             }
         }
     }

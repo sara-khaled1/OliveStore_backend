@@ -24,12 +24,19 @@ public class UserService : IUserService
     public string? SignIn(UserSignIn userSign)
     {
         User? user = _userRepository.FindByEmail(userSign.Email);
-        if (user is null) return null;
+        if (user is null)
+        {
+           return null;
+        }
 
         byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
 
         bool isCorrectPass = PasswordUtility.VerifyPassword(userSign.Password, user.Password, pepper);
-        if (!isCorrectPass) return null;
+        if (!isCorrectPass)
+        {
+           return null;
+        }
+
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, user.FullName),
@@ -38,7 +45,7 @@ public class UserService : IUserService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]!));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var creds = new SigningCredentials(key, SecurityAlgorithms.Sha256);
 
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
@@ -50,6 +57,7 @@ public class UserService : IUserService
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
         return tokenString;
+        
     }
     public IEnumerable<UserReadDto> FindAll()
     {
@@ -92,7 +100,7 @@ public class UserService : IUserService
         if (foundUser is not null)
         {
             return null;
-        }
+        } 
         byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
 
         PasswordUtility.HashPassword(user.Password, out string hashedPassword, pepper);

@@ -40,15 +40,16 @@ public class OrderController : BaseController
     //     return BadRequest();
     // }
 
-    [Authorize(Roles = "Admin,Customer")]
+    // [Authorize(Roles = "Admin,Customer")]
     [HttpPost("checkout")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<OrderReadDto> Checkout([FromBody] List<CheckoutDto> checkoutList)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (checkoutList is null) return BadRequest();
-        return CreatedAtAction(nameof(Checkout), _orderService.Checkout(checkoutList, userId));
+        return CreatedAtAction(nameof(Checkout), _orderService.Checkout(checkoutList, userId!));
     }
 
     [HttpPatch("{id}")]

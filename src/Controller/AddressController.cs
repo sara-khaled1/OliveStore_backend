@@ -17,6 +17,12 @@ public class AddressController : BaseController
     public ActionResult<AddressReadDto?> FindOne(Guid id)
     {
         AddressReadDto? foundAddress = _addressService.FindOne(id);
+
+        if (foundAddress is null)
+        {
+            throw new NullReferenceException();
+        }
+
         return Ok(foundAddress);
     }
 
@@ -34,8 +40,12 @@ public class AddressController : BaseController
     {
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+        if (userId is null)
+        {
+            throw new ArgumentException("User id is not found");
+        }
         return _addressService.CreateOne(address, userId);
+
     }
     [HttpPatch("{id}")]
     public ActionResult<AddressReadDto> UpdateOne(Guid id, Address address)

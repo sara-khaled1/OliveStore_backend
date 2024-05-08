@@ -11,7 +11,7 @@ public class CategoryRepository : ICategoryRepository
     public CategoryRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
-        _categories = _databaseContext.Category;
+        _categories = _databaseContext.Categories;
 
     }
     public IEnumerable<Category> FindAll()

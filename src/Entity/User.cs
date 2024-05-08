@@ -12,7 +12,7 @@ public class User
     public string FullName { get; set; }
     [Required]
     public string Password { get; set; }
-    public string Phone { get; set; }
+    public int Phone { get; set; }
     [Required, EmailAddress]
     public string Email { get; set; }
     public Role Role { get; set; } = Role.Customer;

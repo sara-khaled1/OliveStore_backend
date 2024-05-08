@@ -83,9 +83,9 @@ namespace Backend.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_category");
+                        .HasName("pk_categories");
 
-                    b.ToTable("category", (string)null);
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Order", b =>
@@ -297,7 +297,7 @@ namespace Backend.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_products_category_category_id");
+                        .HasConstraintName("fk_products_categories_category_id");
                 });
 
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", b =>
