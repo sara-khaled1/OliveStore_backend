@@ -17,7 +17,7 @@ public class CategoryController : BaseController
         return Ok(_CategoryService.FindAll());
     }
     [HttpGet("{id}")]
-    public ActionResult<CategoryReadDto?> FindOne(Guid id)
+    public ActionResult<CategoryReadDto?> FindOne([FromRoute]Guid id)
     {
         return Ok(_CategoryService.FindOne(id));
     }
@@ -50,7 +50,7 @@ public class CategoryController : BaseController
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult DeleteOne(Guid id)
+    public ActionResult DeleteOne([FromRoute]Guid id)
     {
         bool isDeleted = _CategoryService.DeleteOne(id);
         if (!isDeleted)
