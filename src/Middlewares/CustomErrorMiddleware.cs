@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using sda_onsite_2_csharp_backend_teamwork.src.Exceptions;
+
+namespace sda_onsite_2_csharp_backend_teamwork.src.Middlewares
+{
+    public class CustomErrorMiddleware : IMiddleware 
+    {
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        {
+            try
+            {
+                await next(context);
+            }
+            catch (CustomErrorException e)
+            {
+                context.Response.StatusCode = e.StatusCode;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                context.Response.StatusCode = 400;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch (Exception e)
+            {
+                context.Response.StatusCode = 400;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(e.Message);
+                Console.WriteLine($"Error: {e.Message}");
+                
+            }
+        }
+    }
+}

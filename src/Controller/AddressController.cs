@@ -34,8 +34,7 @@ public class AddressController : BaseController
     {
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        Console.WriteLine($"USER ID {userId}");
-        
+
         return _addressService.CreateOne(address, userId);
     }
     [HttpPatch("{id}")]

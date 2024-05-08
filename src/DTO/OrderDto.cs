@@ -16,9 +16,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.DTO
     }
     public class OrderCreateDto
     {
-        public Guid UserId { get; set; }
         public Guid AddressId { get; set; }
-        public string Status { get; set; }
         public double TotalPrice { set; get; }
     }
     public class CheckoutDto

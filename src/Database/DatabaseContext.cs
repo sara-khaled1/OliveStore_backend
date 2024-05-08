@@ -1,5 +1,3 @@
-
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
@@ -23,6 +21,7 @@ public class DatabaseContext : DbContext
     {
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(@$"Host={_config["Db:Host"]};Username={_config["Db:Username"]};Database={_config["Db:Database"]};Password={_config["Db:Password"]};Port={_config["Db:Port"]}");
         dataSourceBuilder.MapEnum<Role>();
+        dataSourceBuilder.MapEnum<Status>();
         var dataSource = dataSourceBuilder.Build();
 
         optionsBuilder.UseNpgsql(dataSource)
@@ -32,5 +31,6 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresEnum<Role>();
+        modelBuilder.HasPostgresEnum<Status>();
     }
 }

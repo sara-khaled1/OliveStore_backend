@@ -37,13 +37,13 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
             var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             return orderRead;
         }
-        public OrderReadDto Checkout(List<CheckoutDto> checkoutList)
+        public OrderReadDto Checkout(List<CheckoutDto> checkoutList, string userId)
         {
             double TotalPrice = 0;
             var order = new Order();
-            order.UserId = Guid.NewGuid();
+            order.UserId = new Guid(userId);
             order.AddressId = Guid.NewGuid();
-            // order.Status = Enums.Status.Approved;
+            // order.Status = Enums.Status.Pending;
             order.OrderDate = DateTime.Now;
             foreach (var orderCheckout in checkoutList)
             {
