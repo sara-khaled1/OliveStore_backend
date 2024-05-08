@@ -13,13 +13,8 @@ using sda_onsite_2_csharp_backend_teamwork.src.Enums;
 namespace Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:Migrations/20240507161556_CreateDB.Designer.cs
-    [Migration("20240507161556_CreateDB")]
-    partial class CreateDB
-========
-    [Migration("20240508075116_db")]
-    partial class db
->>>>>>>> 6cfec8bf3e8b72761c69075f75415ae8fa5f64a9:Migrations/20240508075116_db.Designer.cs
+    [Migration("20240508074758_init-db")]
+    partial class initdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

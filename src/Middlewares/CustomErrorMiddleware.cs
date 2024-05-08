@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using sda_onsite_2_csharp_backend_teamwork.src.Exceptions;
 
 namespace sda_onsite_2_csharp_backend_teamwork.src.Middlewares
@@ -18,6 +13,12 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Middlewares
             catch (CustomErrorException e)
             {
                 context.Response.StatusCode = e.StatusCode;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                context.Response.StatusCode = 400;
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync(e.Message);
             }

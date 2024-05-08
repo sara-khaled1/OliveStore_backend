@@ -22,6 +22,7 @@ namespace Backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "role", new[] { "customer", "admin" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "status", new[] { "pending", "approved", "canceled", "preparing", "shipped", "delivered" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", b =>
@@ -102,8 +103,8 @@ namespace Backend.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("order_date");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<Status>("Status")
+                        .HasColumnType("status")
                         .HasColumnName("status");
 
                     b.Property<double>("TotalPrice")

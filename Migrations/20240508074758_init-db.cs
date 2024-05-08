@@ -7,11 +7,7 @@ using sda_onsite_2_csharp_backend_teamwork.src.Enums;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20240507161556_CreateDB.cs
-    public partial class CreateDB : Migration
-========
-    public partial class db : Migration
->>>>>>>> 6cfec8bf3e8b72761c69075f75415ae8fa5f64a9:Migrations/20240508075116_db.cs
+    public partial class initdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
