@@ -8,8 +8,8 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service;
 
 public class OrderItemService : IOrderItemService
 {
-    private readonly IOrderItemRepository _orderItemRepository;
-    private readonly IMapper _mapper;
+    private  IOrderItemRepository _orderItemRepository;
+    private  IMapper _mapper;
 
     public OrderItemService(IOrderItemRepository orderItemRepository, IMapper mapper)
     {
