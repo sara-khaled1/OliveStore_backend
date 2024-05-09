@@ -16,5 +16,9 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Exceptions
         {
             return new CustomErrorException(500, message);
         }
+        static public CustomErrorException Forbidden(string message)
+        {
+            return new CustomErrorException(401, message);
+        }
     }
 }

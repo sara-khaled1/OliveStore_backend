@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.DTO;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
+using sda_onsite_2_csharp_backend_teamwork.src.Exceptions;
 using sda_onsite_2_csharp_backend_teamwork.src.Utility;
 
 namespace sda_onsite_2_csharp_backend_teamwork.src.Service;
@@ -26,7 +27,7 @@ public class UserService : IUserService
         User? user = _userRepository.FindByEmail(userSign.Email);
         if (user is null)
         {
-           return null;
+            throw CustomErrorException.Forbidden("Invalid credentials");
         }
 
         byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
@@ -34,7 +35,7 @@ public class UserService : IUserService
         bool isCorrectPass = PasswordUtility.VerifyPassword(userSign.Password, user.Password, pepper);
         if (!isCorrectPass)
         {
-           return null;
+            throw CustomErrorException.Forbidden("Invalid credentials");
         }
 
         var claims = new[]
@@ -57,7 +58,7 @@ public class UserService : IUserService
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
         return tokenString;
-        
+
     }
     public IEnumerable<UserReadDto> FindAll()
     {
@@ -99,8 +100,8 @@ public class UserService : IUserService
         User? foundUser = _userRepository.FindByEmail(user.Email);
         if (foundUser is not null)
         {
-            return null;
-        } 
+            throw CustomErrorException.Forbidden("You already signed up");
+        }
         byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
 
         PasswordUtility.HashPassword(user.Password, out string hashedPassword, pepper);
