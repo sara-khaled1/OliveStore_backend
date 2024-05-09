@@ -27,6 +27,7 @@ public class MappingProfile : Profile
         CreateMap<OrderItem, OrderItemReadDto>();
 
         CreateMap<CategoryReadDto, Category>();
+        CreateMap<CategoryCreateDto, Category>();
         CreateMap<Category, CategoryReadDto>();
 
         CreateMap<AddressReadDto, Address>();

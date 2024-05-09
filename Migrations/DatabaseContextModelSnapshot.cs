@@ -227,9 +227,8 @@ namespace Backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<int>("Phone")
+                        .HasColumnType("integer")
                         .HasColumnName("phone");
 
                     b.Property<Role>("Role")
@@ -292,12 +291,14 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Product", b =>
                 {
-                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Category", null)
+                    b.HasOne("sda_onsite_2_csharp_backend_teamwork.src.Entity.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_products_categories_category_id");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("sda_onsite_2_csharp_backend_teamwork.src.Entity.Address", b =>

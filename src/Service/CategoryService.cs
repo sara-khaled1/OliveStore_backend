@@ -7,7 +7,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service;
 public class CategoryService : ICategoryService
 {
     private ICategoryRepository _categoryRepository;
-    private  IMapper _mapper;
+    private IMapper _mapper;
 
     public CategoryService(ICategoryRepository CategoryRepository, IMapper mapper)
     {

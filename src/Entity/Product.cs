@@ -11,6 +11,7 @@ public class Product
     public Guid Id { get; set; }
     [Required]
     public Guid CategoryId { get; set; }
+    public Category Category { get; set; }
     [Required]
     public string Name { get; set; }
     [Required]
