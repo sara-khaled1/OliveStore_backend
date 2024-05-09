@@ -21,6 +21,11 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.DTO
     }
     public class CheckoutDto
     {
+        public Guid AddressId { get; set; }
+        public List<Items>? Items { get; set; }
+    }
+    public class Items
+    {
         public int Quantity { get; set; }
         public Guid ProductId { get; set; }
     }

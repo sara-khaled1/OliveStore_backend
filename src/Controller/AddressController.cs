@@ -5,6 +5,8 @@ using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.DTO;
 using sda_onsite_2_csharp_backend_teamwork.src.Entity;
 namespace sda_onsite_2_csharp_backend_teamwork.src.Controller;
+
+[Route("api/v1/addresses")]// s removed : Address becomes addresss - category becomes catecorys 😒
 public class AddressController : BaseController
 {
     private IAddressService _addressService;

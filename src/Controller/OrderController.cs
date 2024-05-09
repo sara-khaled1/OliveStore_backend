@@ -44,7 +44,7 @@ public class OrderController : BaseController
     [HttpPost("checkout")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public ActionResult<OrderReadDto> Checkout([FromBody] List<CheckoutDto> checkoutList)
+    public ActionResult<OrderReadDto> Checkout([FromBody] CheckoutDto checkoutList)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
