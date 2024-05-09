@@ -11,5 +11,5 @@ public class AddressCreateDto
     public string Country { get; set; }
     public string City { get; set; }
     public string Street { get; set; }
-    public string Zip_code { get; set; }
+    public int Zip_code { get; set; }
 }

@@ -50,7 +50,6 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
             {
                 var product = _productRepository.FindOne(orderCheckout.ProductId);
                 if (product is null) continue;
-
                 if (product.Quantity >= orderCheckout.Quantity)
                 {
                     product.Quantity -= orderCheckout.Quantity;
