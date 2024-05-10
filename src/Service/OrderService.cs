@@ -39,13 +39,12 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
         }
         public OrderReadDto Checkout(CheckoutDto checkoutList, string userId)
         {
-            double TotalPrice = 0;
+            double totalPrice = 0;
             var order = new Order();
             order.AddressId = checkoutList.AddressId;
             order.UserId = new Guid(userId);
             order.Status = Enums.Status.Pending;
             var createdOrder = _orderRepository.CreateOne(order);
-            var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             foreach (var orderCheckout in checkoutList.Items!)
             {
                 var product = _productRepository.FindOne(orderCheckout.ProductId);
@@ -60,10 +59,12 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Service
                     orderItem.Quantity = orderCheckout.Quantity;
                     orderItem.UnitPrice = (product.Price * orderCheckout.Quantity);
                     _orderItemRepository.CreateOne(orderItem);
-                    TotalPrice += orderItem.UnitPrice;
+                    totalPrice += orderItem.UnitPrice;
                 }
             }
-            order.TotalPrice = TotalPrice;
+            order.TotalPrice = totalPrice;
+            _orderRepository.UpdateOne(order);
+            var orderRead = _mapper.Map<OrderReadDto>(createdOrder);
             return orderRead;
         }
 
