@@ -30,7 +30,7 @@ public class UserService : IUserService
             throw CustomErrorException.Forbidden("Invalid credentials");
         }
 
-        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt_Pepper"]!);
 
         bool isCorrectPass = PasswordUtility.VerifyPassword(userSign.Password, user.Password, pepper);
         if (!isCorrectPass)
@@ -45,12 +45,12 @@ public class UserService : IUserService
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]!));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt_SigningKey"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
+            issuer: _config["Jwt_Issuer"],
+            audience: _config["Jwt_Audience"],
             claims: claims,
             expires: DateTime.Now.AddDays(7),
             signingCredentials: creds
@@ -102,7 +102,7 @@ public class UserService : IUserService
         {
             throw CustomErrorException.Forbidden("You already signed up");
         }
-        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+        byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt_Pepper"]!);
 
         PasswordUtility.HashPassword(user.Password, out string hashedPassword, pepper);
         user.Password = hashedPassword;
