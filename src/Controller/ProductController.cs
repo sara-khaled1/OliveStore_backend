@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.DTO;
@@ -13,9 +14,11 @@ public class ProductController : BaseController
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ProductReadDto>> FindAll()
+    public ActionResult<IEnumerable<ProductReadDto>> FindAll([FromQuery(Name ="searchBy")] string ?
+    searchBy)
     {
-        return Ok(_productService.FindAll());
+     
+        return Ok(_productService.FindAll(searchBy));
     }
 
     [HttpGet("{id}")]

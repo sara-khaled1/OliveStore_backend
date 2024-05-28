@@ -15,9 +15,15 @@ public class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public IEnumerable<ProductReadDto> FindAll()
+    public IEnumerable<ProductReadDto> FindAll(string? searchBy)
     {
         var products = _productRepository.FindAll();
+
+        if (searchBy is not null)
+        {
+             products = products.Where(product => product.Name.ToLower().Contains(searchBy.ToLower()));
+        }
+
         var productRead = products.Select(_mapper.Map<ProductReadDto>);
         return productRead;
     }

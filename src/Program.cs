@@ -1,29 +1,50 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Npgsql;
 using sda_onsite_2_csharp_backend_teamwork.src.Abstraction;
 using sda_onsite_2_csharp_backend_teamwork.src.Database;
-using sda_onsite_2_csharp_backend_teamwork.src.Middlewares;
+using sda_onsite_2_csharp_backend_teamwork.src.Enums;
 using sda_onsite_2_csharp_backend_teamwork.src.Repository;
 using sda_onsite_2_csharp_backend_teamwork.src.Server;
 using sda_onsite_2_csharp_backend_teamwork.src.Service;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+// configuring DB
+var _config = builder.Configuration;
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(@$"Host={_config["Db:Host"]};Username={_config["Db:Username"]};Database={_config["Db:Database"]};Password={_config["Db:Password"]};Port={_config["Db:Port"]}");
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+dataSourceBuilder.MapEnum<Role>();
 
-builder.Services.AddDbContext<DatabaseContext>();
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// lower case
+var dataSource = dataSourceBuilder.Build();
+builder.Services.AddDbContext<DatabaseContext>((options) =>
+{
+    options.UseNpgsql(dataSource).UseSnakeCaseNamingConvention();
+});
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddSwaggerGen(
+     options =>
+    {
+        options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+        {
+            Description = "Bearer token authentication",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Scheme = "Bearer"
+        }
+        );
+
+        options.OperationFilter<SecurityRequirementsOperationFilter>();
+    }
+);
 // dependency injection service 
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -40,9 +61,19 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<CustomErrorMiddleware>();
-
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins(builder.Configuration["Cors:Origin"]!)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .SetIsOriginAllowed((host) => true)
+                            .AllowCredentials();
+                      });
+});
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -60,9 +91,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
 var app = builder.Build();
 
-app.UseMiddleware<CustomErrorMiddleware>();
+// Should be added
+app.MapControllers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -70,10 +103,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseHttpsRedirection();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
-
-app.MapControllers();
-
 app.Run();

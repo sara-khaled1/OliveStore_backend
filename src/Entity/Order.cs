@@ -13,6 +13,7 @@ public class Order
     public Status Status { get; set; } = Status.Pending;
 
     public DateTime OrderDate { get; set; } = DateTime.Now;
+    
     [Required]
     public double TotalPrice { set; get; }
     public IEnumerable<OrderItem>? OrderItems { get; set; }

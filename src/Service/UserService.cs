@@ -35,7 +35,7 @@ public class UserService : IUserService
         bool isCorrectPass = PasswordUtility.VerifyPassword(userSign.Password, user.Password, pepper);
         if (!isCorrectPass)
         {
-            throw CustomErrorException.Forbidden("Invalid credentials");
+            throw CustomErrorException.Forbidden("Invalid credentials!!");
         }
 
         var claims = new[]

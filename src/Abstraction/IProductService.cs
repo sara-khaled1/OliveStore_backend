@@ -4,7 +4,7 @@ namespace sda_onsite_2_csharp_backend_teamwork.src.Abstraction
 {
     public interface IProductService
     {
-        public IEnumerable<ProductReadDto> FindAll();
+        public IEnumerable<ProductReadDto> FindAll( string? searchBy);
         public ProductReadDto? FindOne(Guid id);
         public ProductReadDto? FindByCategory(Guid categoryId);
         public ProductReadDto CreateOne(ProductCreateDto product);
